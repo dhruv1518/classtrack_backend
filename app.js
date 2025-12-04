@@ -1,9 +1,8 @@
 import express from "express";
 import cors from "cors";
 import admin from "firebase-admin";
-import fs from "fs";
 
-// Load your service account key
+// Load service account key from Render environment variable
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_KEY);
 
 admin.initializeApp({
@@ -24,8 +23,8 @@ app.post("/send-notification", async (req, res) => {
   try {
     const { title, message } = req.body;
 
-    // Get all device tokens from Firestore
-    const tokensSnapshot = await db.collection("device_tokens").get();
+    // Get all device tokens from Firestore (FIXED COLLECTION NAME)
+    const tokensSnapshot = await db.collection("users_tokens").get();
 
     if (tokensSnapshot.empty) {
       return res.json({ success: false, message: "No device tokens found" });
@@ -35,7 +34,7 @@ app.post("/send-notification", async (req, res) => {
 
     const payload = {
       notification: {
-        title: title,
+        title,
         body: message,
       },
     };
