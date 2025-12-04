@@ -1,0 +1,4 @@
+serviceAccountKey.json
+.history/
+node_modules/
+.env
